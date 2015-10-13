@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta name="author" content="云淡然;http://ydr.me">
+	<meta name="keywords" content="关键词1,关键词2">
+	<meta name="description" content="描述语句">
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="apple-touch-icon" href="/favicon.png">
+	<title>然艺计划收入计算器</title>
+	<script src="http://cdn.bootcss.com/jquery/2.1.0/jquery.min.js"></script>
+	<script type="text/javascript" src="dep/hogan.js"></script>
+</head>
+<body>	
+	
+	<div>大班情况：</div>
+	<ul>
+		<li>
+			<label>班数：</label><input type='text' name="bigClassNo" value="9">				
+		</li>
+		<li>
+			<label>单价：</label><input type='text' name="bigClassPrice" value="70">				
+		</li>
+		<li>
+			<label>人数：</label><input type='text' name="bigClassMemberNo" value="69">				
+		</li>
+		<li>
+			<label>课酬：</label><input type='text' name="bigClassReward" value="200">				
+		</li>
+	</ul>
+	<div>小班情况：</div>
+	<ul>
+		<li>
+			<label>班数：</label><input type='text' name="smallClassNo" value="9">				
+		</li>
+		<li>
+			<label>单价：</label><input type='text' name="smallClassPrice" value="50">				
+		</li>
+		<li>
+			<label>人数：</label><input type='text' name="smallClassMemberNo" value="69">				
+		</li>
+		<li>
+			<label>课酬：</label><input type='text' name="smallClassReward" value="150">				
+		</li>
+	</ul>	
+	<div>冯老师代班情况：</div>
+	<ul>
+		<li>
+			<label>小班数：</label><input type='text' name="fengSmallClassNo" value="4">				
+		</li>
+		<li>
+			<label>小班人数：</label><input type='text' name="fengSmallClassMemberNo" value="40">				
+		</li>
+		<li>
+			<label>大班数：</label><input type='text' name="fengBigClassNo" value="5">				
+		</li>
+		<li>
+			<label>大班人数：</label><input type='text' name="fengBigClassMemberNo" value="50">				
+		</li>
+	</ul>	
+	<div>运营成本：</div>
+	<ul>
+		<li>
+			<label>非工资支出：</label><input type='text' name="otherOutcome" allowblank>				
+		</li>		
+	</ul>	
+	<div><button id="calculate">计算</button></div>
+
+	<div id="report">
+		
+	</div>
+</body>
+</html>
+<script type="text/javascript">
+	$(function(){
+		$('#calculate').click(calculate);
+
+		function calculate(){
+			var result = validate();
+			if(result){
+				//计算基本情况
+				result.totalNo = result.bigClassMemberNo + result.smallClassMemberNo;
+				result.classNo = result.bigClassNo + result.smallClassNo;
+				result.otherBigClassNo = result.bigClassNo - result.fengBigClassNo;
+				result.otherSmallClassNo = result.smallClassNo - result.fengSmallClassNo;
+
+				//计算月收入
+				result.bigClassIncome = result.bigClassMemberNo * result.bigClassPrice * 4
+				result.smallClassIncome = result.smallClassMemberNo * result.smallClassPrice * 4
+				result.income = result.bigClassIncome + result.smallClassIncome;
+				result.fengBigIncome = result.fengBigClassMemberNo * result.bigClassPrice * 4
+				result.fengSmallIncome = result.fengSmallClassMemberNo * result.smallClassPrice * 4;
+				result.fengIncome = result.fengBigIncome + result.fengSmallIncome;
+
+				//计算月支出				
+				result.bigClassOutcome = result.bigClassReward * 4 * result.bigClassNo;
+				result.smallClassOutcome = result.smallClassReward * 4 * result.smallClassNo;
+				result.rewardOutcome = result.bigClassOutcome + result.smallClassOutcome;
+				result.otherOutcome = result.otherOutcome || 0;
+				result.outcome = result.bigClassOutcome + result.smallClassOutcome + result.otherOutcome;
+				result.fengRewardOutcom = result.smallClassReward * 4 * result.fengSmallClassNo + result.bigClassReward * 4 * result.fengBigClassNo;
+				result.rewardOutcomeRate = percentFormat(result.rewardOutcome /result.outcome);
+				result.otherOutcomeRate = percentFormat(result.otherOutcome / result.outcome);
+
+				//计算利润
+				result.profit = result.income - result.outcome;
+
+				//计算分成
+				result.fengDivided55 = result.profit / 2 + result.fengRewardOutcom;
+				result.yuxinDivided55 = result.profit / 2;
+
+				result.fengDivided64 = result.income * 0.6 - result.outcome + result.fengRewardOutcom;
+				result.yuxinDivided64 = result.income * 0.4;
+				
+				renderReport(result);
+			}
+		}
+
+		function validate(){
+			var result = true,
+				resultObj = {};
+			$('input').not('[allowblank]').each(function(){
+				var $item = $(this);
+				if(this.value === ''){
+					result = false;
+					$item.addClass('validate-fail');					
+				}
+
+				$item.removeClass('validate-fail');
+				resultObj[this.name] = parseInt(this.value, 10);
+			});
+
+			return result && resultObj;			
+		}
+
+		function percentFormat(number){
+			var n = new Number(100 * number);
+			return n.toFixed(2) + '%';
+		}
+
+		function renderReport(data){
+			$('#report').html(Hogan.compile($('#reportTemplate').html()).render(data));
+		}
+
+
+	});
+
+</script>
+<script type="text/template" id="reportTemplate">
+<h2>基本信息</h2>
+	<div id="baseInfo">
+		<ul>
+			<li>学生总数：{{totalNo}},  大班{{bigClassMemberNo}}人,  小班{{smallClassMemberNo}}人</li>
+			<li>班级总数：{{classNo}},  大班{{bigClassNo}}个,   小班{{smallClassNo}}个</li>
+			<li>课费：大班{{bigClassPrice}}元/人/课,  小班{{smallClassPrice}}元/人/课</li>
+			<li>老师课酬：大班{{bigClassReward}}元/班/课,  小班{{smallClassReward}}元/班/课</li>
+			<li>冯老师代课数：大班{{fengBigClassNo}}个, 小班{{fengSmallClassNo}}个</li>
+			<li>其他老师代课数：大班{{otherBigClassNo}}个， 小班{{otherSmallClassNo}}</li>
+		</ul>
+	</div>
+	<h2 >月收入</h2>
+	<div id="income">
+		<div class="desc">
+			收入仅是根据当前人数、课费、课酬等数据计算出来的一个理论值，实际情况由于在一段时间内会发生人数变动、课酬课费变动，月结算的收入可能会不一致。因此仅供参考
+		</div>
+		<ul class="report_item">
+			<li>总收入：¥{{income}}元</li>
+			<li>大班总收入：¥{{bigClassIncome}}元; 小班收入：¥{{smallClassIncome}}元</li>
+			<li>冯老师贡献收入：¥{{fengIncome}}元</li>
+		</ul>
+	</div>
+	
+	<h2 >月支出</h2>
+	<div id="outcome">
+		<div class="desc">
+			月支出.....
+		</div>
+		<ul class="report_item">
+			<li>总支出：¥{{outcome}}元</li>
+			<li>大班课酬：¥{{bigClassOutcome}}元；小班课酬：¥{{smallClassOutcome}}</li>
+			<li>其他支出：¥{{otherOutcome}}元</li>
+			<li>课酬支出占比：{{rewardOutcomeRate}}; 其他支出占比：{{otherOutcomeRate}}</li>
+		</ul>
+	</div>
+
+	<h2 >月利润</h2>
+	<div id="profit">
+		<div class="desc">
+			月利润指的是月收入-月支出（课酬+其他支出）的余额
+		</div>
+		<ul class="report_item">
+			<li>总利润：¥{{profit}}元</li>				
+		</ul>
+	</div>
+	<h2>月分成</h2>
+	<div id="divided">
+		<div class="desc">月分成按照两种方案生成报告</div>
+		<h3>五五分成方案</h3>
+		<p>刨去所有运营支出和老师课酬后的月利润，五五平分</p>
+		<ul class="report_item">
+			<li>冯老师所得：¥{{fengDivided55}}元</li>
+			<li>育新国际所得：¥{{yuxinDivided55}}元</li>
+		</ul>
+		<h3>六四分成方案</h3>
+		<p>冯老师6、育新国际4，冯老师支付老师课酬和其他运营支出</p>
+		<ul class="report_item">
+			<li>冯老师所得：¥{{fengDivided64}}元</li>
+			<li>育新国际所得：¥{{yuxinDivided64}}元</li>
+		</ul>
+	</div>
+</script>
