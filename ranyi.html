@@ -13,10 +13,22 @@
 	<title>然艺计划收入计算器</title>
 	<script src="http://cdn.bootcss.com/jquery/2.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="dep/hogan.js"></script>
+
+	<style type="text/css">
+		body{padding:20px;}
+		h1{text-align:center;}
+		input{height:30px;width:100px;line-height:30px;padding:0 4px;border-radius:2px;border:1px solid #888;}
+		button{border:0;background:#166FAE;width:200px;height:30px;font-size:14px;font-weight:bold;color:white;cursor:pointer;}
+		ul li{padding:4px 0;}		
+		#report{margin:20px 0;border:1px solid #C3DDEF;border-radius:4px;padding:20px;}
+		.desc{color:#666;line-height:16px;font-size:12px;}
+		#report strong{font-size:20px;margin:0 2px;color:red;font-weight:bold;font-family: Arial;}
+		#report b{font-size:16px;font-weight:bold;font-family: Arial;color:brown;margin:0 2px;}
+	</style>
 </head>
 <body>	
-	
-	<div>大班情况：</div>
+	<h1>冯老师专用计算器</h1>
+	<h2>大班情况：</h2>
 	<ul>
 		<li>
 			<label>班数：</label><input type='text' name="bigClassNo" value="9">				
@@ -31,7 +43,7 @@
 			<label>课酬：</label><input type='text' name="bigClassReward" value="200">				
 		</li>
 	</ul>
-	<div>小班情况：</div>
+	<h2>小班情况：</h2>
 	<ul>
 		<li>
 			<label>班数：</label><input type='text' name="smallClassNo" value="9">				
@@ -46,7 +58,7 @@
 			<label>课酬：</label><input type='text' name="smallClassReward" value="150">				
 		</li>
 	</ul>	
-	<div>冯老师代班情况：</div>
+	<h2>冯老师代班情况：</h2>
 	<ul>
 		<li>
 			<label>小班数：</label><input type='text' name="fengSmallClassNo" value="4">				
@@ -61,14 +73,15 @@
 			<label>大班人数：</label><input type='text' name="fengBigClassMemberNo" value="50">				
 		</li>
 	</ul>	
-	<div>运营成本：</div>
+	<h2>运营成本：</h2>
 	<ul>
 		<li>
 			<label>非工资支出：</label><input type='text' name="otherOutcome" allowblank>				
 		</li>		
 	</ul>	
 	<div><button id="calculate">计算</button></div>
-
+	
+	<h2>计算结果：</h2>
 	<div id="report">
 		
 	</div>
@@ -76,7 +89,7 @@
 </html>
 <script type="text/javascript">
 	$(function(){
-		$('#calculate').click(calculate);
+		$('#calculate').click(calculate).trigger('click');
 
 		function calculate(){
 			var result = validate();
@@ -167,9 +180,9 @@
 			收入仅是根据当前人数、课费、课酬等数据计算出来的一个理论值，实际情况由于在一段时间内会发生人数变动、课酬课费变动，月结算的收入可能会不一致。因此仅供参考
 		</div>
 		<ul class="report_item">
-			<li>总收入：¥{{income}}元</li>
-			<li>大班总收入：¥{{bigClassIncome}}元; 小班收入：¥{{smallClassIncome}}元</li>
-			<li>冯老师贡献收入：¥{{fengIncome}}元</li>
+			<li>总收入：<strong>¥{{income}}元</strong></li>
+			<li>大班总收入：<b>¥{{bigClassIncome}}元</b>; 小班收入：<b>¥{{smallClassIncome}}元</b></li>
+			<li>冯老师贡献收入：<b>¥{{fengIncome}}元</b></li>
 		</ul>
 	</div>
 	
@@ -179,9 +192,9 @@
 			月支出.....
 		</div>
 		<ul class="report_item">
-			<li>总支出：¥{{outcome}}元</li>
-			<li>大班课酬：¥{{bigClassOutcome}}元；小班课酬：¥{{smallClassOutcome}}</li>
-			<li>其他支出：¥{{otherOutcome}}元</li>
+			<li>总支出：<strong>¥{{outcome}}元</strong></li>
+			<li>大班课酬：<b>¥{{bigClassOutcome}}元</b>；小班课酬：<b>¥{{smallClassOutcome}}元</b></li>
+			<li>其他支出：<b>¥{{otherOutcome}}元</b></li>
 			<li>课酬支出占比：{{rewardOutcomeRate}}; 其他支出占比：{{otherOutcomeRate}}</li>
 		</ul>
 	</div>
@@ -192,23 +205,23 @@
 			月利润指的是月收入-月支出（课酬+其他支出）的余额
 		</div>
 		<ul class="report_item">
-			<li>总利润：¥{{profit}}元</li>				
+			<li>总利润：<strong>¥{{profit}}元</strong></li>				
 		</ul>
 	</div>
 	<h2>月分成</h2>
 	<div id="divided">
 		<div class="desc">月分成按照两种方案生成报告</div>
 		<h3>五五分成方案</h3>
-		<p>刨去所有运营支出和老师课酬后的月利润，五五平分</p>
+		<p class="desc">刨去所有运营支出和老师课酬后的月利润，五五平分</p>
 		<ul class="report_item">
-			<li>冯老师所得：¥{{fengDivided55}}元</li>
-			<li>育新国际所得：¥{{yuxinDivided55}}元</li>
+			<li>冯老师所得：<strong>¥{{fengDivided55}}元</strong></li>
+			<li>育新国际所得：<strong>¥{{yuxinDivided55}}元</strong></li>
 		</ul>
 		<h3>六四分成方案</h3>
-		<p>冯老师6、育新国际4，冯老师支付老师课酬和其他运营支出</p>
+		<p class="desc">冯老师6、育新国际4，冯老师支付老师课酬和其他运营支出</p>
 		<ul class="report_item">
-			<li>冯老师所得：¥{{fengDivided64}}元</li>
-			<li>育新国际所得：¥{{yuxinDivided64}}元</li>
+			<li>冯老师所得：<strong>¥{{fengDivided64}}元</strong></li>
+			<li>育新国际所得：<strong>¥{{yuxinDivided64}}元</strong></li>
 		</ul>
 	</div>
 </script>
