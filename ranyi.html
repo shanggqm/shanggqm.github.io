@@ -93,6 +93,8 @@
 		$('#calculate').click(calculate).trigger('click');
 		$('input').on('touchstart', function(){
 			$(this).focus();
+		}).on('touchmove', function(e){
+			e.preventDefault();
 		});
 		function calculate(){
 			var result = validate();
