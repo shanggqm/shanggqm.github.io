@@ -12,6 +12,7 @@
 	<link rel="apple-touch-icon" href="/favicon.png">
 	<title>然艺计划收入计算器</title>
 	<script src="dep/zepto.js"></script>
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/fastclick/1.0.0/fastclick.min.js"></script>
 	<script type="text/javascript" src="dep/hogan.js"></script>
 
 	<style type="text/css">
@@ -90,12 +91,14 @@
 </html>
 <script type="text/javascript">
 	$(function(){
+		FastClick.attach(document.body);
+		
 		$('#calculate').click(calculate).trigger('click');
-		$('input').on('touchstart', function(){
-			$(this).focus();
-		}).on('touchmove', function(e){
-			e.preventDefault();
-		});
+		// $('input').on('touchstart', function(){
+		// 	$(this).focus();
+		// }).on('touchmove', function(e){
+		// 	e.preventDefault();
+		// });
 		function calculate(){
 			var result = validate();
 			if(result){
