@@ -140,13 +140,17 @@
 				resultObj = {};
 				$('input').removeClass('validate_fail');	
 			$('input').not('[allowblank]').each(function(){
-				var $item = $(this);
+				var $item = $(this);				
 				if(this.value === ''){
 					result = false;
 					$item.addClass('validate_fail');					
 				}
 
 				resultObj[this.name] = parseInt(this.value, 10);
+			});
+
+			$('input[allowblank]').each(function(){
+				resultObj[this.name] = parseInt(this.value || 0, 10);
 			});
 
 			return result && resultObj;			
