@@ -91,7 +91,7 @@
 <script type="text/javascript">
 	$(function(){
 		$('#calculate').click(calculate).trigger('click');
-		$('input').on('touchend', function(){
+		$('input').on('touchstart', function(){
 			$(this).focus();
 		});
 		function calculate(){
