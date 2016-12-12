@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="问题描述在SPA单页面架构中，通过hash传递name, desc这种UGC字段时，因为无法控制特殊字符导致在解析hash后面的参数时出错。比如:http://hao.a.com/init.action#main/module/create/~id=12323&amp;amp;name=alsdf@@#$%">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="guomeiqing">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="SPA架构下，hash传递UGC类参数时由于编码引发的问题"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="上古清茗"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>SPA架构下，hash传递UGC类参数时由于编码引发的问题 - 上古清茗</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+	
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">上古清茗的博客</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/shanggqm">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/spa-hash.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>SPA架构下，hash传递UGC类参数时由于编码引发的问题</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2015-08-21
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/SPA/">#SPA</a> <a href="/tags/经验/">#经验</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在SPA单页面架构中，通过hash传递name, desc这种UGC字段时，因为无法控制特殊字符导致在解析hash后面的参数时出错。比如:<a href="http://hao.a.com/init.action#main/module/create/~id=12323&amp;name=alsdf@@#$%)^)&amp;@$%" target="_blank" rel="external">http://hao.a.com/init.action#main/module/create/~id=12323&amp;name=alsdf@@#$%)^)&amp;@$%</a></p>
+<p>因为目前hash结构是#/page/entity/crud/~param，实际开发中会有通过hash获取参数的需求，尤其在页面直接通过URL定位、刷新或者链接跳转时，因为没有上下文的JS参数传递，如果不借助接口传参的话，则只能通过url去拿参数。</p>
+<p>以上说的参数传递问题，理论上是可以通过良好的接口设计来避免，但实际开发中，由于缺乏统一的规范，需要和后端协调商定参数等问题，很难成功推行。因此还需要前端方案自己来保障及时有类似的需求，也可以正确、稳定、安全的传递参数。</p>
+<h2 id="方案设计"><a href="#方案设计" class="headerlink" title="方案设计"></a>方案设计</h2><p>系统中的参数传递，一般会涉及到两种：<code>id类</code>，<code>UGC类</code></p>
+<ul>
+<li>id类是比较常见的参数，一般由数据库生成，后端返回给前端，而且一般是纯数字，结构简单，且不存在安全问题；</li>
+<li>UGC类是由用户在系统中输入并存储到DB中的字段，通常会存在xss风险，特殊字符问题等等，属于不安全内容，必须要对该类字段进行有效的处理；</li>
+</ul>
+<p>UGC类内容的使用场景一般分为两种：</p>
+<ul>
+<li>从后端取回，显示在界面中</li>
+<li>被当成参数，通过url进行传递</li>
+</ul>
+<p>第一种场景，要注意xss注入的风险，需要对尖括号，或者不安全字符进行escape；或者通过模板库渲染，杜绝手动设置innerHTML，或者jquery.html这种使用方法；</p>
+<p>第二种场景的情况比较多：</p>
+<ul>
+<li>可以通过模板直接生成在a标签上;</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#main/module/crud/~id=&#123;&#123;id&#125;&#125;&amp;name=&#123;&#123;name&#125;&#125;"</span>&gt;</span>新建<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
+<ul>
+<li>可以通过js动态赋值到href上</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> id = <span class="number">12</span>;</div><div class="line"><span class="keyword">var</span> name = <span class="string">'帆布鞋'</span>;</div><div class="line"></div><div class="line">$(<span class="string">'#button'</span>).attr(<span class="string">'href'</span>, <span class="string">'#main/module/crud/~id='</span> + id + <span class="string">'&amp;name='</span> + name);</div></pre></td></tr></table></figure>
+<ul>
+<li>可以直接拼凑hash url，直接navigate<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> id = <span class="number">12</span>;</div><div class="line"><span class="keyword">var</span> name = <span class="string">'帆布鞋'</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> url = <span class="string">'main/module/crud/~id='</span> + id + <span class="string">'&amp;name='</span>+ name;</div><div class="line">router.navigate(url, config);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这些情况处理逻辑各不相同，有些可以很方便的对参数做encodeURIComponent，有些情况却不容易做，比如第一种通过模板生成a标签的方式。因此统一出口逻辑很重要，比如在全局router下定义一个function nav(){} 用来执行所有通过hash路由导航的功能：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">nav</span>(<span class="params">url, params, navConfig</span>)</span>&#123;</div><div class="line">	<span class="keyword">var</span> hash = url + <span class="string">'~'</span>,</div><div class="line">	    paramsArray = [];</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">var</span> e <span class="keyword">in</span> params)&#123;</div><div class="line">		<span class="keyword">if</span>(params.hasOwnProperty(e))&#123;</div><div class="line">			paramsArray.push(e + <span class="string">'='</span> + <span class="built_in">encodeURIComponent</span>(params[e]));</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	hash = hash + paramsArray.join(<span class="string">'&amp;'</span>);</div><div class="line">	<span class="keyword">this</span>.navigate(hash, navConfig || <span class="keyword">this</span>.navConfig);	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上述方法对所有的参数统一采用url encode，再放到url的hash里，理论上讲只要通过这种方式来路由，可以避免上文提到的参数解析问题，实际的URL可能是这样：<br><a href="http://hao.a.com/init.action#main/page/crud/~id=12&amp;name=%25E6%25B5%258B%25E8%25AF%2595%25E6%258E%25A8%25E5%25B9%25BF%25E8%25AE%25A1%25E5%2588%2592!%2540%2523%2524%2523%2523%2524%255E%2525%2526%2524%2525%2526%2523%2525%255E%2526%2523%2525%255E%2523%2526*%2525" target="_blank" rel="external">http://hao.a.com/init.action#main/page/crud/~id=12&amp;name=%25E6%25B5%258B%25E8%25AF%2595%25E6%258E%25A8%25E5%25B9%25BF%25E8%25AE%25A1%25E5%2588%2592!%2540%2523%2524%2523%2523%2524%255E%2525%2526%2524%2525%2526%2523%2525%255E%2526%2523%2525%255E%2523%2526*%2525</a></p>
+<p>通过解析/~后面的参数字符串，先分割，再decode，理论上可以正确拿到各个参数值，比如下面的parseParams方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">parseParam</span>(<span class="params">param</span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> p = &#123;&#125;;</div><div class="line">  <span class="keyword">if</span>(!param)&#123;</div><div class="line">    <span class="keyword">return</span> p;</div><div class="line">  &#125;</div><div class="line">  param = param.split(<span class="string">'&amp;'</span>);</div><div class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i&lt; param.length; i++)&#123;</div><div class="line">    <span class="keyword">var</span> kv = param[i].split(<span class="string">'='</span>);</div><div class="line">    p[kv[<span class="number">0</span>]] = <span class="built_in">decodeURIComponent</span>(kv[<span class="number">1</span>]);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> p;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>问题看似已经完美的解决了，实际环境中一跑，发现仍然无法正常解析。什么原因呢？通过debug发现，backbone在navigate函数里，对hash做了一些处理，如下图的_extractParameters方法</p>
+<p><img src="https://github.com/shanggqm/blog/blob/master/asset/image/20150827_paper1_1.png" alt="_extractParameters" title="_extractParameters"></p>
+<p>这个方法对自定义hash结构中的参数做了decodeURIComponent的解码操作，如下图所示：</p>
+<p><img src="https://github.com/shanggqm/blog/blob/master/asset/image/20150827_paper1_2.png" alt="backbone" title="backbone"></p>
+<p>所以实际上，在Backbone Router里设置的自定义路由参数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">routers:&#123;</div><div class="line">  <span class="string">'main/:module/(:crud/)(~:param)'</span>: <span class="string">'main'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>中的param解析后就是已经解码过的参数：<br><a href="http://hao.a.com/init.action#main/module/crud/~id=131201&amp;name=特殊字符@#$##$^%&amp;$%&amp;#%^&amp;#%^#&amp;*%" target="_blank" rel="external">http://hao.a.com/init.action#main/module/crud/~id=131201&amp;name=特殊字符@#$##$^%&amp;$%&amp;#%^&amp;#%^#&amp;*%</a><br>此时再对/~后面的param做parseParam分割就会出错，因为name中包含了’&amp;’字符。</p>
+<p>问题找到了，解决的方法也很简单，在navigate的时候，对参数做两次encodeURIComponent即可。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">nav</span>(<span class="params">url, params, navConfig</span>)</span>&#123;</div><div class="line">	<span class="keyword">var</span> hash = url + <span class="string">'~'</span>,</div><div class="line">	    paramsArray = [];</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">var</span> e <span class="keyword">in</span> params)&#123;</div><div class="line">		<span class="keyword">if</span>(params.hasOwnProperty(e))&#123;</div><div class="line">			paramsArray.push(e + <span class="string">'='</span> + <span class="built_in">encodeURIComponent</span>(<span class="built_in">encodeURIComponent</span>(params[e])));</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	hash = hash + paramsArray.join(<span class="string">'&amp;'</span>);</div><div class="line">	<span class="keyword">this</span>.navigate(hash, navConfig || <span class="keyword">this</span>.navConfig);	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="经验总结"><a href="#经验总结" class="headerlink" title="经验总结"></a>经验总结</h2><ul>
+<li>实际开发的时候，为了杜绝上述问题的再次发生，最好从规范层面来解决，不允许直接通过模板的方式给a标签设置hash url。统一采用js捕获点击事件来执行nav操作。</li>
+<li>对于这种和底层框架相关、具备通用性的问题，最好在底层解决，不要放到业务代码层面去自己encode。</li>
+</ul>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/shanggqm" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 guomeiqing<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
